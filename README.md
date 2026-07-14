@@ -16,6 +16,7 @@ A **Claude Code skill** for interactive, sentence-by-sentence academic paper rev
 4. 新增合并句规则：被 Bold 改写吞并的句子标记 `merged into SXXX` 并跳过，ID 永不重排。
 5. 新增语言承诺：交流用作者聊天的语言，改写用论文本身的语言。
 6. 开场一次性提问：选节奏（逐句都停 / 只停需要改的句子）+ 快速校准（目标期刊、禁区章节、初始激进度），记入 style-profile 的 `Session settings`。
+7. **完成后自动编译 PDF**：修订全部完成时自动把 `working/` 编译成 PDF（`.tex` 用 latexmk、`.md` 用 pandoc；图/bib 在原目录时通过 `TEXINPUTS`/`BIBINPUTS` 或复制到原目录解决；先编译 `original/` 作对照，只调试修订引入的错误，最多两轮）。提前中断时改为询问是否编译。
 
 ## 安装
 

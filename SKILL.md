@@ -152,4 +152,10 @@ When the author stops or you reach the end:
 
 - Summarize what changed: sentences reviewed, edited, and kept.
 - Show a diff between `original/` and `working/` so they see the whole revision at a glance (`diff -u original/<file> working/<file>`, or a section summary if it's large).
+- **Compile the PDF.** When the full pass is complete, build `working/<file>` automatically so the author ends with a finished PDF; if they stopped early, offer it instead of assuming.
+  - `.tex` — prefer `latexmk -pdf -interaction=nonstopmode` (switch to `-xelatex`/`-lualatex` if the document requires it; fall back to manual `pdflatex`/`bibtex` passes when latexmk is missing). Papers rarely live alone: if figures, `.bib` files, or custom classes sit next to the original, make them resolvable — prepend the original's directory to `TEXINPUTS`/`BIBINPUTS`, or copy the working file into the paper's own folder under a distinct name (`<stem>-revised.tex`) and compile there. Never overwrite any of the author's files.
+  - `.md` — `pandoc` to PDF if available.
+  - `.txt`, or no toolchain installed — skip, and tell the author how to compile it themselves.
+  - On failure, compile `original/` the same way as a control: if the original fails too, the problem predates the revision — report it and move on. If only `working/` fails, an edit introduced it — trace the offending sentence via `revision-log.md`, fix it (through the author's choice if prose must change), and rebuild. Two debugging rounds max; report honestly rather than thrash.
+  - Tell the author where the PDF landed.
 - The edited paper is `working/<file>`; the backup is untouched in `original/`. Leave it to the author to copy `working/` back over their source — don't overwrite their original file yourself.
