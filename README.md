@@ -1,4 +1,4 @@
-# claude-code-hardworking-paper-writer
+# claude-code-paper-writer
 
 A **Claude Code skill** for interactive, sentence-by-sentence academic paper revision — strips AI writing tells while preserving the author's own voice.
 
