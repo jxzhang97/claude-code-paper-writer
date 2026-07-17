@@ -17,6 +17,7 @@ A **Claude Code skill** for interactive, sentence-by-sentence academic paper rev
 5. 新增语言承诺：交流用作者聊天的语言，改写用论文本身的语言。
 6. 开场一次性提问：选节奏（逐句都停 / 只停需要改的句子）+ 快速校准（目标期刊、禁区章节、初始激进度），记入 style-profile 的 `Session settings`。
 7. **完成后自动编译 PDF**：修订全部完成时自动把 `working/` 编译成 PDF（`.tex` 用 latexmk、`.md` 用 pandoc；图/bib 在原目录时通过 `TEXINPUTS`/`BIBINPUTS` 或复制到原目录解决；先编译 `original/` 作对照，只调试修订引入的错误，最多两轮）。提前中断时改为询问是否编译。
+8. **五项健壮性升级（2026-07-17，借鉴 jxzhang97/cAI-tools 状态机版的对比结论，两版同步）**：resume 前校验源文件 SHA-256（防会话间的外部修改被静默覆盖、防 `paper.tex`/`paper.md` 同 stem 撞工作区）；Phase 0 检测多文件 LaTeX 的 `\input{}`/`\include{}`；意义保护清单补全（hedge、界、量词、单位、数字、极性、因果方向）；Keep original 选项也完整重复原句；日志常设 Pending decision 小节。运行时开销仅为每次会话 1–2 次 `shasum` + 1 次 grep，逐句循环零新增。
 
 ## 安装
 

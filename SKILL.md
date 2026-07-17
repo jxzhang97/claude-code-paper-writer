@@ -40,7 +40,7 @@ These are the patterns you are hunting for. Apply them as judgment, not as a che
 
 If the stop-slop plugin is installed alongside this one, deeper references live at `plugins/stop-slop/skills/stop-slop/references/` (`phrases.md`, `structures.md`, `examples.md`) — read them only when a specific case is unclear. If that path doesn't exist, don't go hunting for it; the nine principles above are self-sufficient.
 
-For papers, add three domain constraints on top: **never alter meaning** (a tighter sentence that changes a claim is a failure), **leave math, citations, labels, and defined terms untouched**, and **match field register** — a Nature letter and a math proof slop differently.
+For papers, add three domain constraints on top: **never alter meaning** — a tighter sentence that changes a claim is a failure, and meaning lives in more places than the main verb: hedges, bounds, quantifiers, units, numbers, polarity, causal direction — **leave math, citations, labels, and defined terms untouched**, and **match field register** — a Nature letter and a math proof slop differently.
 
 ## Two things the sentence loop can miss
 
@@ -52,9 +52,9 @@ Fixing one line at a time is necessary but not sufficient. Two defects only surf
 
 ## Phase 0 — Set up the workspace
 
-1. **Locate the paper** from `$ARGUMENTS`. If none is given, ask for the path. Accept `.tex`, `.md`, `.txt`. For a folder, prefer `.tex`, then `.md`. If only a PDF exists, tell the author this skill needs a text source and point them at `paper-review-helper` to convert it first.
+1. **Locate the paper** from `$ARGUMENTS`. If none is given, ask for the path. Accept `.tex`, `.md`, `.txt`. For a folder, prefer `.tex`, then `.md`. If only a PDF exists, tell the author this skill needs a text source and point them at `paper-review-helper` to convert it first. Before settling on a `.tex` source, check it for active `\input{}` / `\include{}` lines (a quick grep, ignoring commented ones): a multi-file paper revised through its main file alone gets silently half-edited. If any are found, surface them and ask the author to either provide one flattened, self-contained file or confirm the scope is just this file.
 
-2. **Check for an existing revision** before creating anything. If `<paper-stem>-revision/` already exists with a `revision-log.md`, this is a resume — skip to "Resuming" below.
+2. **Check for an existing revision** before creating anything. If `<paper-stem>-revision/` already exists with a `revision-log.md`, first verify it belongs to this source: the log header records the source's filename and SHA-256 (note `paper.tex` and `paper.md` share a stem and would collide on the same workspace). If they match, this is a resume — skip to "Resuming" below; if they don't, stop and ask the author instead of touching the workspace.
 
 3. **Build the workspace** as a sibling of the paper:
 
@@ -70,7 +70,7 @@ Fixing one line at a time is necessary but not sufficient. Two defects only surf
 
 Copy the source into both `original/` and `working/`. From here on, every Edit targets `working/` only. The `original/` copy is the safety net and the basis for the final diff.
 
-4. **Seed the two tracking files** from the templates in [references/templates.md](references/templates.md). Tell the author the workspace is ready and where it is.
+4. **Seed the two tracking files** from the templates in [references/templates.md](references/templates.md), recording the source's filename and SHA-256 in the log header (`shasum -a 256 <source>` — one command, once per session). Tell the author the workspace is ready and where it is.
 
 ## Phase 1 — Read the whole paper and profile the voice
 
@@ -98,7 +98,7 @@ Loop over unreviewed sentences in order. For each one:
 
 **1. Show it in context.** Display the previous sentence (dimmed/as context), the current sentence, and the next sentence. Context prevents you from "fixing" a sentence in a way that breaks the flow into the next claim.
 
-**2. Judge it.** Decide which stop-slop patterns, if any, actually apply, and whether the meaning has any fragile parts (a hedge, a precise bound, a defined term) you must preserve. Read it once more as the reader, not the author: is there jargon with a plainer equivalent, an acronym not yet expanded, or a term used here that your first-use map says isn't defined until later? Those are reader-stalls worth fixing even when the sentence is otherwise clean. If the sentence is both clean and clear to an outside reader and in the author's voice, don't manufacture problems to look busy: in stop-at-every-sentence mode, say so plainly and offer to keep it — a fast "this one's clean, keep it?" is a good outcome; in flag-only mode, log it as `kept` and move on, reporting skipped ranges at the next stop. When the sentence opens or closes a paragraph, also weigh its structural job: does the opener announce the paragraph's claim, does the closer hand off to the next paragraph? Let that shape the rewrites.
+**2. Judge it.** Decide which stop-slop patterns, if any, actually apply, and whether the meaning has any fragile parts you must preserve — hedges, bounds, quantifiers, units, numbers, defined terms, polarity, and causal direction ("may be associated with" flattened into "caused" is a rejected rewrite, not a style win). Read it once more as the reader, not the author: is there jargon with a plainer equivalent, an acronym not yet expanded, or a term used here that your first-use map says isn't defined until later? Those are reader-stalls worth fixing even when the sentence is otherwise clean. If the sentence is both clean and clear to an outside reader and in the author's voice, don't manufacture problems to look busy: in stop-at-every-sentence mode, say so plainly and offer to keep it — a fast "this one's clean, keep it?" is a good outcome; in flag-only mode, log it as `kept` and move on, reporting skipped ranges at the next stop. When the sentence opens or closes a paragraph, also weigh its structural job: does the opener announce the paragraph's claim, does the closer hand off to the next paragraph? Let that shape the rewrites.
 
 **3. Offer three versions as a spectrum.** When a sentence does need work, generate exactly three rewrites at increasing edit distance, each obeying the style-profile and each changing nothing about the meaning:
 
@@ -112,6 +112,7 @@ The spectrum is deliberate. The author's pick tells you how aggressive they want
 
 - The **original sentence**, quoted in full and labeled as the original.
 - Each candidate as a **complete sentence**, marked up as an inline diff against the original — ~~strikethrough~~ for deleted words, **bold** for insertions — so the author sees exactly where each option touches the sentence. (For a Bold rewrite that merges a neighbor, diff against both original sentences together.)
+- When **Keep original** is on offer, include it in the chat comparison the same way: the complete unchanged sentence, marked "Changes: none" — every option reads as a full sentence. The dialog label stays a short `Keep original`.
 - Under each candidate, one line naming the edit level and what it fixes, e.g. "Medium — cuts the filler opener; replaces vague 'significantly' with the number."
 
 For example:
@@ -132,7 +133,7 @@ Then call `AskUserQuestion` with short labels — `Light`, `Medium`, `Bold`, plu
 - **"Other" containing a full sentence** → treat it as their final wording; apply it verbatim. If it's ambiguous whether they meant a final sentence or an instruction, ask once.
 - **"Other" containing an instruction** ("shorter", "keep the citation inline", "less formal", "I like #2 but drop the adverb") → this is steering, not a choice. Generate three new versions guided by it and stay on the same sentence. This loop is where the author teaches you their taste — treat their instruction as a rule for this sentence *and* a signal for future ones.
 
-**6. Apply and log.** Edit `working/` to the chosen text (skip if Keep original). If the chosen rewrite merged neighboring sentences, mark the absorbed sentence's status as `merged into SXXX` in the sentence map and skip it when advancing — IDs never renumber. Append to `revision-log.md`: the sentence id, original, final text, which version they picked, and the fixes applied. This file is the record of what's been reviewed — keep it current so a resume is exact.
+**6. Apply and log.** Edit `working/` to the chosen text (skip if Keep original). If the chosen rewrite merged neighboring sentences, mark the absorbed sentence's status as `merged into SXXX` in the sentence map and skip it when advancing — IDs never renumber. Append to `revision-log.md`: the sentence id, original, final text, which version they picked, and the fixes applied. Make this the turn's single log write, placed just before you present the next choice: in the same edit, refresh the **Pending decision** section to the sentence and options you are about to show (and clear the one just committed) — an interrupted session then reads back exactly where it stopped, at no extra runtime cost. This file is the record of what's been reviewed — keep it current so a resume is exact.
 
 **7. Learn.** Update `style-profile.md` with what this choice revealed: their preferred edit aggressiveness, words or constructions they consistently keep or kill, how they handle hedging. Reference [references/preference-learning.md](references/preference-learning.md) for what signals to extract and how to let them shift your future options. The goal is concrete: by sentence 30 you should be proposing options that need far less steering than at sentence 3.
 
@@ -144,7 +145,7 @@ Keep the rhythm humane. Offer the author natural break points ("we've done 20 of
 
 ## Resuming
 
-When `<paper-stem>-revision/` already exists: read `revision-log.md` to find the last reviewed sentence and read `style-profile.md` to restore everything you learned about the author. Re-read `working/` for current context, then continue from the first unreviewed sentence. Confirm the resume point with the author before diving back in.
+When `<paper-stem>-revision/` already exists: first re-verify the source's identity — recompute `shasum -a 256` on the source file and compare filename and hash against the log header (one command; this catches both a source edited outside the session and a `paper.tex`/`paper.md` stem collision). On a mismatch, stop and ask: continuing on `working/` would silently drop the author's outside edits when they later copy it back over the source. If it matches, read `revision-log.md` to find the last reviewed sentence and any **Pending decision**, and read `style-profile.md` to restore everything you learned about the author. Re-read `working/` for current context, then continue — re-present an interrupted pending decision if one is recorded, otherwise pick up at the first unreviewed sentence. Confirm the resume point with the author before diving back in.
 
 ## Finishing
 

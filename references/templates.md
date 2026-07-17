@@ -8,6 +8,7 @@ Seed these two files in Phase 0. Keep them plain Markdown so the author can read
 # Revision log — <paper title or filename>
 
 - Source: <path to original>
+- Source SHA-256: <shasum -a 256 of the source at workspace creation — checked again on every resume>
 - Started: <date>
 - Total prose sentences: <N>   (fill in after segmentation)
 - Last reviewed: <sentence id, or "none yet">
@@ -37,6 +38,10 @@ _Filled during the Phase 1 whole-paper read, updated as you go. This is the supr
 |-------------------------|------------|---------------|--------------------|
 | SNR                     | S031       | S012          | used before defined |
 | $\gamma$                | S020       | S020          | ok                  |
+
+## Pending decision
+
+_The choice currently awaiting the author — sentence id and the staged options. Refreshed in the same write as each Decisions entry (never a separate pass); `None.` when nothing is pending._
 
 ## Decisions
 
