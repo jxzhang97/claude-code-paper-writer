@@ -22,8 +22,8 @@ A **Claude Code skill** for interactive, sentence-by-sentence academic paper rev
 ## 安装
 
 ```bash
-git clone git@github.com:jxzhang97/claude-code-hardworking-paper-writer.git
-ln -s "$(pwd)/claude-code-hardworking-paper-writer" ~/.claude/skills/hardworking-paper-writer
+git clone git@github.com:jxzhang97/claude-code-paper-writer.git
+ln -s "$(pwd)/claude-code-paper-writer" ~/.claude/skills/hardworking-paper-writer
 ```
 
 或直接把本目录复制为 `~/.claude/skills/hardworking-paper-writer/`。新开的 Claude Code 会话即可使用。
