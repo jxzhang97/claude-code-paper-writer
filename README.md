@@ -6,7 +6,7 @@ A **Claude Code skill** for interactive, sentence-by-sentence academic paper rev
 
 ## 出处与许可
 
-改编自 [caidish/cAI-tools](https://github.com/caidish/cAI-tools) 中的 `plugins/science-skill/skills/hardworking-paper-writer`（下载于 2026-07-14）。**原仓库未附开源许可证，所有权利归原作者**，故本仓库保持私有、仅供个人使用，请勿公开分发。
+改编自 [caidish/cAI-tools](https://github.com/caidish/cAI-tools) 中的 `plugins/science-skill/skills/hardworking-paper-writer`（下载于 2026-07-14）。**原仓库未附开源许可证，上游内容的权利归原作者**。本仓库为其修改版，基于 GitHub 公开仓库可查看、可 fork 的平台惯例公开分享；若原作者提出异议，将立即转回私有或下架。因上游未授权，本仓库整体不附加开源许可证（`references/register-calibration.md` 除外——其内容蒸馏自 Apache-2.0 许可的 nature-skills，文内已注明来源）。
 
 ## 相对上游的本地改动
 
