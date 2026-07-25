@@ -33,11 +33,12 @@ _Filled during the Phase 1 whole-paper read, updated as you go. This is the supr
 | Intro ¶1  | S004                                        | ok             |
 | Intro ¶2  | buried (claim in S011, not S009)            | weak — no link |
 
-### First-use map (catch use-before-define)
-| Term / symbol / acronym | Defined at | First used at | Issue              |
-|-------------------------|------------|---------------|--------------------|
-| SNR                     | S031       | S012          | used before defined |
-| $\gamma$                | S020       | S020          | ok                  |
+### Term ledger (catch use-before-define and synonym drift)
+| Term / symbol / acronym | Canonical form | Defined at | First used at | Issue |
+|---|---|---|---|---|
+| SNR | signal-to-noise ratio (SNR) | S031 | S012 | used before defined |
+| $\gamma$ | $\gamma$ | S020 | S020 | ok |
+| the model / our framework / the pipeline | the model | S008 | — | synonym drift — unify |
 
 ## Pending decision
 
@@ -84,6 +85,7 @@ _Initial read (before any choices), then updated as the author selects._
 ## Session settings
 - Pacing: <every sentence / flag-only (clean sentences auto-kept)>
 - Calibration: <target venue/reader; off-limits sections; initial aggressiveness>
+- L1 / interference lens: <author's first language if not English — switches on the L2 lens; else off>
 
 ## Notes
 - <anything the author says about how they want to be edited>
